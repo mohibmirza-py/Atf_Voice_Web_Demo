@@ -31,10 +31,10 @@ export function Header() {
         >
           <Link href="/" className="flex gap-3 items-center">
             <Image 
-              src="/atf_logo.svg"
+              src="/atf_logo.png"
               alt="AI Team Force Logo"
-              width={28}
-              height={28}
+              width={32}
+              height={32}
               className="opacity-90"
             />
             <motion.h1 

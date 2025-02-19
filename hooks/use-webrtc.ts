@@ -460,7 +460,7 @@ export default function useWebRTCAudioSession(
       await pc.setLocalDescription(offer);
 
       // Send SDP offer to OpenAI Realtime
-      const baseUrl = "https://api.openai.com/v1/realtime";
+      const baseUrl = "https://api.aiteamforce.com/v1/realtime";
       const model = "gpt-4o-realtime-preview-2024-12-17";
       const response = await fetch(`${baseUrl}?model=${model}&voice=${voice}`, {
         method: "POST",

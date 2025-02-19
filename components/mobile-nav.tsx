@@ -14,6 +14,7 @@ import Link from "next/link";
 import { siteConfig } from "@/config/site";
 import { Badge } from "./ui/badge";
 import { useTranslations } from "@/components/translations-context"
+import Image from "next/image"
 
 export function MobileNav() {
   const { t } = useTranslations();
@@ -33,9 +34,16 @@ export function MobileNav() {
               <Link
                 href="/"
                 onClick={() => setOpen(false)}
-                className="flex items-center gap-3 text-2xl"
+                className="flex items-center gap-3"
               >
-                  {siteConfig.name}
+                <Image 
+                  src="/atf_logo.png"
+                  alt="AI Team Force Logo"
+                  width={32}
+                  height={32}
+                  className="opacity-90"
+                />
+                {siteConfig.name}
                 <Badge variant="outline" className="text-normal">
                   {t('header.beta')}
                 </Badge>

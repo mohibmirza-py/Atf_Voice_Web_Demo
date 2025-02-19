@@ -19,6 +19,8 @@ import { PromptSelector } from "@/components/prompt-selector"
 import { Button } from "@/components/ui/button"
 import { prompts } from "@/config/prompts"
 
+const SHOW_TOOLS = false; // Feature flag to control tools visibility
+
 const App: React.FC = () => {
   const { t, setLocale } = useTranslations();
   const [voice, setVoice] = useState("ash");
@@ -163,9 +165,11 @@ const App: React.FC = () => {
         </motion.div>
         
         {status && <StatusDisplay status={status} />}
-        <div className="w-full flex flex-col items-center gap-4">
-          <ToolsEducation />
-        </div>
+        {SHOW_TOOLS && (
+          <div className="w-full flex flex-col items-center gap-4">
+            <ToolsEducation />
+          </div>
+        )}
       </motion.div>
     </main>
   )

@@ -1,13 +1,13 @@
-# OpenAI WebRTC Shadcn Next15 Starter
-This is a WebRTC-based Voice AI stream application using `OpenAI`'s `Realtime API` and `WebRTC`. Project contains `/api` route and UI components developed with `Next.js` and `shadcn/ui`. It supports real-time audio conversations implented in [skrivov/openai-voice-webrtc-next](https://github.com/skrivov/openai-voice-webrtc-next) with the addition of a hook to abstract the WebRTC handling.
+# Sarah - AI Team Force Assistant
+This is a WebRTC-based Voice AI stream application developed by AI Team Force. Project contains `/api` route and UI components developed with `Next.js` and `shadcn/ui`.
 
 https://github.com/user-attachments/assets/ea9324af-5c18-48d2-b980-2b81baeea4c0
 
 ## Features
 - **Next.js Framework**: Built with Next.js for server-side rendering and API routes.
 - **Modern UI**: Animated using Tailwind CSS & Framer Motion & shadcn/ui.
-- **Use-WebRTC Hook**: A hook to abstract the OpenAI WebRTC handling.
-- **Tool Calling**: 6 example functions to demonstrate client side tools along with Realtime API: `getCurrentTime`, `partyMode`, `changeBackground`, `launchWebsite`, `copyToClipboard`, `scrapeWebsite` (requires FireCrawl API key)
+- **Use-WebRTC Hook**: A hook to abstract WebRTC handling.
+- **Tool Calling**: 6 example functions to demonstrate client side tools: `getCurrentTime`, `partyMode`, `changeBackground`, `launchWebsite`, `copyToClipboard`, `scrapeWebsite`
 - **Localization**: Select language for app strings and the voice agent (English, Spanish, French, Chinese)
 - **Type Safety**: TypeScript with strict eslint rules (optional)
 
@@ -71,5 +71,5 @@ This project is licensed under the MIT License. See the `LICENSE` file for detai
 - [OpenAI](https://openai.com/) for their API and models.
 - [Next.js](https://nextjs.org/) for the framework.
 - [Tailwind CSS](https://tailwindcss.com/) for styling.
-- [Simon Willison’s Weblog](https://simonwillison.net/2024/Dec/17/openai-webrtc/) for inspiration
+- [Simon Willison's Weblog](https://simonwillison.net/2024/Dec/17/openai-webrtc/) for inspiration
 - [Originator: skrivov](https://github.com/skrivov/openai-voice-webrtc-next) for the WebRTC and Nextjs implementation

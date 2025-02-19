@@ -1,12 +1,12 @@
 export const siteConfig = {
-  name: "OpenAI Realtime Starter",
-  url: "https://openai-rt-shadcn.vercel.app",
-  description: "OpenAI Realtime Starter is a template for Realtime Voice AI with Shadcn UI components. It demonstrates tool calling with a WebRTC hook.",
-  author: "cameronking4",
+  name: "Sarah - AI Team Force",
+  url: "https://www.aiteamforce.com",
+  description: "Sarah is a versatile AI assistant that can adapt to various roles and speak multiple languages.",
+  author: "AI Team Force",
   links: {
-    twitter: "https://x.com/cameronyking4",
-    github: "https://github.com/cameronking4/shadcn-openai-realtime-api",
-    portfolio: "https://www.linkedin.com/in/cameronyking",
+    twitter: "https://x.com/aiteamforce",
+    github: "https://github.com/aiteamforce",
+    portfolio: "https://www.aiteamforce.com",
   }
 };
 
