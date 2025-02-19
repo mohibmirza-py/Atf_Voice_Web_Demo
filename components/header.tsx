@@ -4,12 +4,13 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
 import { ThemeSwitcher } from "@/components/theme-switcher";
-import { MobileNav } from "./mobile-nav";
-import { Badge } from "./ui/badge";
-import { siteConfig } from "@/config/site";
-import { TwitterIcon, StarIcon, InstagramIcon, GlobeIcon } from "lucide-react";
+import { MobileNav } from "@/components/mobile-nav";
+import { Badge } from "@/components/ui/badge";
+
+// TODO: Replace with custom or accurate icons
+import { Globe, Instagram } from "lucide-react";
 import { motion } from "framer-motion";
-import { useTranslations } from "@/components/translations-context";
+import { useTranslations } from "./translations-context";
 
 export function Header() {
   const { t } = useTranslations()
@@ -76,7 +77,7 @@ export function Header() {
                 aria-label="Visit the Website"
               >
                 <span className="hidden md:block">Visit Website</span>
-                <GlobeIcon className="h-4 w-4" />
+                <Globe className="h-4 w-4" />
               </Button>
             </motion.div>
           </Link>
@@ -94,7 +95,7 @@ export function Header() {
                 aria-label="Follow on Instagram"
               >
                 <span className="hidden md:block">Follow on Instagram</span>
-                <InstagramIcon className="h-4 w-4" />
+                <Instagram className="h-4 w-4" />
               </Button>
             </motion.div>
           </Link>
