@@ -25,25 +25,31 @@ type TranslationsContextType = {
   setLocale: (locale: string) => void
 }
 
-const TranslationsContext = createContext<TranslationsContextType | null>(null)
+const TranslationsContext = createContext<TranslationsContextType | undefined>(undefined)
 
 export function TranslationsProvider({ children }: { children: ReactNode }) {
   const [locale, setLocale] = useState('en')
 
   const t = (key: string): string => {
     const keys = key.split('.')
-    let value: TranslationValue = translations[locale]
-    
+    let value: any = en
+
     for (const k of keys) {
-      if (value === undefined) return key
-      value = typeof value === 'object' ? value[k] : key
+      if (value === undefined || value === null) return key
+      value = value[k]
     }
 
     return typeof value === 'string' ? value : key
   }
 
+  const value = {
+    t,
+    locale,
+    setLocale,
+  }
+
   return (
-    <TranslationsContext.Provider value={{ t, locale, setLocale }}>
+    <TranslationsContext.Provider value={value}>
       {children}
     </TranslationsContext.Provider>
   )
@@ -51,7 +57,7 @@ export function TranslationsProvider({ children }: { children: ReactNode }) {
 
 export function useTranslations() {
   const context = useContext(TranslationsContext)
-  if (!context) {
+  if (context === undefined) {
     throw new Error('useTranslations must be used within a TranslationsProvider')
   }
   return context

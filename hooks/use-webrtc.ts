@@ -4,6 +4,10 @@ import { useState, useRef, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { Conversation } from "@/lib/conversations";
 import { useTranslations } from "@/components/translations-context";
+import { en } from "@/lib/translations/en";
+import { es } from "@/lib/translations/es";
+import { fr } from "@/lib/translations/fr";
+import { zh } from "@/lib/translations/zh";
 
 export interface Tool {
   name: string;
@@ -34,6 +38,7 @@ interface UseWebRTCAudioSessionReturn {
  */
 export default function useWebRTCAudioSession(
   voice: string,
+  systemPrompt: string,
   tools?: Tool[],
 ): UseWebRTCAudioSessionReturn {
   const { t, locale } = useTranslations();
@@ -98,6 +103,20 @@ export default function useWebRTCAudioSession(
     console.log("Session update sent:", sessionUpdate);
     console.log("Setting locale: " + t("language") + " : " + locale);
 
+    // Get the appropriate language prompt based on locale
+    const getLanguagePrompt = (locale: string) => {
+      switch(locale) {
+        case 'es':
+          return es.languagePrompt;
+        case 'fr':
+          return fr.languagePrompt;
+        case 'zh':
+          return zh.languagePrompt;
+        default:
+          return en.languagePrompt;
+      }
+    }
+
     // Send language preference message
     const languageMessage = {
       type: "conversation.item.create",
@@ -107,7 +126,7 @@ export default function useWebRTCAudioSession(
         content: [
           {
             type: "input_text",
-            text: t("languagePrompt"),
+            text: getLanguagePrompt(locale),
           },
         ],
       },
@@ -323,6 +342,10 @@ export default function useWebRTCAudioSession(
       const response = await fetch("/api/session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          voice,
+          instructions: systemPrompt,
+        }),
       });
       if (!response.ok) {
         throw new Error(`Failed to get ephemeral token: ${response.status}`);
@@ -553,7 +576,8 @@ export default function useWebRTCAudioSession(
     };
     
     dataChannelRef.current.send(JSON.stringify(message));
-    dataChannelRef.current.send(JSON.stringify(response));}
+    dataChannelRef.current.send(JSON.stringify(response));
+  }
 
   // Cleanup on unmount
   useEffect(() => {

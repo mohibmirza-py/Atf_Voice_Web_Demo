@@ -104,10 +104,13 @@ export const fr = {
     },
     voice: {
         select: "Sélectionner une voix",
+        alloy: "Alloy - Équilibrée et Claire",
         ash: "Ash - Douce et Professionnelle",
         ballad: "Ballad - Chaleureuse et Engageante",
         coral: "Coral - Claire et Amicale",
+        echo: "Echo - Contrôlée et Mesurée",
         sage: "Sage - Autoritaire et Calme",
+        shimmer: "Shimmer - Brillante et Énergique",
         verse: "Verse - Dynamique et Expressive"
     },
     language: "Français",

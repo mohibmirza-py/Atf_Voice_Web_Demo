@@ -112,5 +112,12 @@ export const en = {
         verse: "Verse - Dynamic & Expressive"
     },
     language: "English",
-    languagePrompt: "Speak and respond only in English. It is crucial that you maintain your responses in English. If the user speaks in other languages, you should still respond in English."
+    languagePrompt: "Speak and respond only in English. It is crucial that you maintain your responses in English. If the user speaks in other languages, you should still respond in English.",
+    systemPrompt: {
+        label: "System Instructions",
+        expand: "Customize",
+        collapse: "Hide",
+        placeholder: "Enter custom instructions for the AI assistant...",
+        default: "Start conversation with the user by saying 'Hello, how can I help you today?' Use the available tools when relevant..."
+    }
 }

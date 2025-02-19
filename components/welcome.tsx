@@ -4,29 +4,23 @@ import { GithubIcon } from "lucide-react"
 import Link from "next/link"
 import { useTranslations } from "@/components/translations-context"
 
-export const Welcome = () => {
+export function Welcome() {
   const { t } = useTranslations()
   
   return (
-    <div className="text-center mb-8 rounded-lg p-4">
-      <div className="flex justify-center items-center mx-auto gap-2 h-full w-full mb-2">
-        <Badge className="text-xl font-medium motion-preset-slide-left-md">
-          {t('hero.badge')}
-        </Badge>
-        <Link href="https://github.com/cameronking4/shadcn-openai-realtime-webrtc">
-          <Button className="shadow-md rounded-full motion-preset-slide-up-right" variant="outline">
-            <GithubIcon />
-          </Button>
-        </Link>
-      </div>
-      <h1 className="text-4xl font-bold mb-4 motion-preset-slide-up-lg">
-        {t('hero.title')}
+    <div className="text-center mb-8 space-y-2">
+      <h1 className="text-3xl font-bold tracking-tighter bg-gradient-to-r from-[#e83163] to-[#fbb51f] bg-clip-text text-transparent">
+        Meet Sarah - Your AI Assistant
       </h1>
-      <p className="max-w-2xl mx-auto motion-preset-slide-down">
-        {t('hero.subtitle')}
+      <p className="text-muted-foreground">
+        By AI Team Force
+      </p>
+      <p className="max-w-[600px] text-sm text-muted-foreground mx-auto">
+        Sarah is a versatile AI assistant that can adapt to various roles and speak multiple languages. 
+        Choose a template or customize her behavior to suit your needs.
       </p>
     </div>
   )
-} 
+}
 
 export default Welcome;

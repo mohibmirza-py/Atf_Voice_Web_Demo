@@ -104,10 +104,13 @@ export const zh = {
     },
     voice: {
         select: "选择语音",
+        alloy: "Alloy - 平衡清晰",
         ash: "Ash - 温和专业",
         ballad: "Ballad - 温暖动人",
         coral: "Coral - 清晰友好",
+        echo: "Echo - 可控稳重",
         sage: "Sage - 权威平静",
+        shimmer: "Shimmer - 明亮活力",
         verse: "Verse - 富有表现力"
     },
     language: "Chinese",

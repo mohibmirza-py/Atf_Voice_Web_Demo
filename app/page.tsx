@@ -13,12 +13,30 @@ import { ToolsEducation } from "@/components/tools-education"
 import { TextInput } from "@/components/text-input"
 import { motion } from "framer-motion"
 import { useToolsFunctions } from "@/hooks/use-tools"
+import { SystemPromptInput } from "@/components/system-prompt-input"
+import { useTranslations } from "@/components/translations-context"
+import { PromptSelector } from "@/components/prompt-selector"
+import { Button } from "@/components/ui/button"
+import { prompts } from "@/config/prompts"
 
 const App: React.FC = () => {
-  // State for voice selection
-  const [voice, setVoice] = useState("ash")
+  const { t, setLocale } = useTranslations();
+  const [voice, setVoice] = useState("ash");
+  const [industry, setIndustry] = useState("");
+  const [language, setLanguage] = useState("");
+  const [isCustomPrompt, setIsCustomPrompt] = useState(false);
+  const [systemPrompt, setSystemPrompt] = useState(t('systemPrompt.default'));
 
-  // WebRTC Audio Session Hook
+  // Move function declaration before its usage
+  const getFinalPrompt = () => {
+    if (isCustomPrompt) return systemPrompt;
+    
+    const industryPrompt = industry ? prompts.industry[industry as keyof typeof prompts.industry] : '';
+    const languagePrompt = language ? prompts.language[language as keyof typeof prompts.language] : '';
+    
+    return `${industryPrompt} ${languagePrompt}`.trim() || systemPrompt;
+  };
+
   const {
     status,
     isSessionActive,
@@ -26,8 +44,10 @@ const App: React.FC = () => {
     handleStartStopClick,
     msgs,
     conversation,
-    sendTextMessage
-  } = useWebRTCAudioSession(voice, tools)
+    sendTextMessage,
+    stopSession,
+    startSession
+  } = useWebRTCAudioSession(voice, getFinalPrompt(), tools);
 
   // Get all tools functions
   const toolsFunctions = useToolsFunctions();
@@ -48,10 +68,20 @@ const App: React.FC = () => {
     });
   }, [registerFunction, toolsFunctions])
 
+  // Example function to change AI language programmatically
+  const changeAILanguage = (language: 'en' | 'es' | 'fr' | 'zh') => {
+    setLocale(language);
+    // You might want to restart the session here
+    if (isSessionActive) {
+      stopSession();
+      startSession();
+    }
+  };
+
   return (
     <main className="h-full">
       <motion.div 
-        className="container flex flex-col items-center justify-center mx-auto max-w-3xl my-20 p-12 border rounded-lg shadow-xl"
+        className="container flex flex-col items-center justify-center mx-auto max-w-3xl my-20 p-12 bg-white dark:bg-gray-900 rounded-2xl shadow-[0_0_15px_rgba(0,0,0,0.1)]"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -59,12 +89,54 @@ const App: React.FC = () => {
         <Welcome />
         
         <motion.div 
-          className="w-full max-w-md bg-card text-card-foreground rounded-xl border shadow-sm p-6 space-y-4"
+          className="w-full max-w-md bg-white dark:bg-gray-900 rounded-xl border-[0.5px] border-gray-100 dark:border-gray-800 shadow-sm p-6 space-y-4"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2, duration: 0.4 }}
         >
           <VoiceSelector value={voice} onValueChange={setVoice} />
+          
+          <div className="space-y-4">
+            <div className="flex items-center space-x-2 justify-center w-full mb-2">
+              <Button 
+                variant={isCustomPrompt ? "outline" : "default"}
+                onClick={() => setIsCustomPrompt(false)}
+                className="w-full bg-[#e83163] text-white hover:bg-[#d42b59]"
+              >
+                🤖 Configure Sarah
+              </Button>
+              <Button 
+                variant={isCustomPrompt ? "default" : "outline"}
+                onClick={() => setIsCustomPrompt(true)}
+                className="w-full"
+              >
+                ⚙️ Custom Instructions
+              </Button>
+            </div>
+
+            {!isCustomPrompt ? (
+              <>
+                <PromptSelector
+                  type="industry"
+                  value={industry}
+                  onValueChange={setIndustry}
+                  disabled={isSessionActive}
+                />
+                <PromptSelector
+                  type="language"
+                  value={language}
+                  onValueChange={setLanguage}
+                  disabled={isSessionActive}
+                />
+              </>
+            ) : (
+              <SystemPromptInput 
+                value={systemPrompt}
+                onChange={setSystemPrompt}
+                disabled={isSessionActive}
+              />
+            )}
+          </div>
           
           <div className="flex flex-col items-center gap-4">
             <BroadcastButton 
