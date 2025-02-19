@@ -14,9 +14,21 @@ import {
 } from "@/components/ui/table"
 import { useTranslations } from "@/components/translations-context"
 
+// Add disclaimer component
+function Disclaimer() {
+  return (
+    <div className="fixed bottom-4 right-4 text-xs text-muted-foreground">
+      <p>For Demo Purposes Only</p>
+      <p>© AI Team Force, LLC</p>
+    </div>
+  )
+}
 
 export function ToolsEducation() {
   const { t } = useTranslations();
+
+  // Return both null for tools and the disclaimer
+  return <Disclaimer />;
 
   const AVAILABLE_TOOLS = [
     {
@@ -45,7 +57,8 @@ export function ToolsEducation() {
     },
   ] as const;
 
-  return (
+  // Original code is preserved but not executed
+  /* return (
     <div className="w-full max-w-lg mt-4">
       <Accordion type="single" collapsible>
         <AccordionItem value="tools">
@@ -67,5 +80,5 @@ export function ToolsEducation() {
         </AccordionItem>
       </Accordion>
     </div>
-  )
+  ) */
 } 

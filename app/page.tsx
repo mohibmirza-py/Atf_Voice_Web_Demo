@@ -19,8 +19,6 @@ import { PromptSelector } from "@/components/prompt-selector"
 import { Button } from "@/components/ui/button"
 import { prompts } from "@/config/prompts"
 
-const SHOW_TOOLS = false; // Feature flag to control tools visibility
-
 const App: React.FC = () => {
   const { t, setLocale } = useTranslations();
   const [voice, setVoice] = useState("ash");
@@ -36,9 +34,10 @@ const App: React.FC = () => {
     const industryPrompt = industry ? prompts.industry[industry as keyof typeof prompts.industry] : '';
     const languagePrompt = language ? prompts.language[language as keyof typeof prompts.language] : '';
     
-    return `${industryPrompt} ${languagePrompt}`.trim() || systemPrompt;
+    return `${industryPrompt}\n\n[Language Settings]\n${languagePrompt}`.trim() || systemPrompt;
   };
 
+  const finalPrompt = getFinalPrompt();
   const {
     status,
     isSessionActive,
@@ -49,7 +48,7 @@ const App: React.FC = () => {
     sendTextMessage,
     stopSession,
     startSession
-  } = useWebRTCAudioSession(voice, getFinalPrompt(), tools);
+  } = useWebRTCAudioSession(voice, tools, finalPrompt);
 
   // Get all tools functions
   const toolsFunctions = useToolsFunctions();
@@ -69,16 +68,6 @@ const App: React.FC = () => {
       registerFunction(functionNames[name], func);
     });
   }, [registerFunction, toolsFunctions])
-
-  // Example function to change AI language programmatically
-  const changeAILanguage = (language: 'en' | 'es' | 'fr' | 'zh') => {
-    setLocale(language);
-    // You might want to restart the session here
-    if (isSessionActive) {
-      stopSession();
-      startSession();
-    }
-  };
 
   return (
     <main className="h-full">
@@ -165,11 +154,9 @@ const App: React.FC = () => {
         </motion.div>
         
         {status && <StatusDisplay status={status} />}
-        {SHOW_TOOLS && (
-          <div className="w-full flex flex-col items-center gap-4">
-            <ToolsEducation />
-          </div>
-        )}
+        <div className="w-full flex flex-col items-center gap-4">
+          <ToolsEducation />
+        </div>
       </motion.div>
     </main>
   )

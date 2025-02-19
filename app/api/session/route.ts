@@ -12,11 +12,11 @@ export async function POST(request: Request) {
             throw new Error(`OPENAI_API_KEY is not set`);
         }
 
-        // Get custom instructions from request body
+        // Get custom instructions and voice from request body
         const body: SessionRequestBody = await request.json();
         
-        // Default instructions if none provided
-        const defaultInstructions = "Start conversation with the user by saying 'Hello, how can I help you today?' Use the available tools when relevant. After executing a tool, you will need to respond (create a subsequent conversation item) to the user sharing the function result or error. If you do not respond with additional message with function result, user will not know you successfully executed the tool. Speak and respond in the language of the user.";
+        // Use the provided instructions or fall back to a minimal default
+        const instructions = body.instructions || "Start conversation with the user.";
 
         const response = await fetch("https://api.openai.com/v1/realtime/sessions", {
             method: "POST",
@@ -28,7 +28,7 @@ export async function POST(request: Request) {
                 model: "gpt-4o-realtime-preview-2024-12-17",
                 voice: body.voice || "alloy",
                 modalities: ["audio", "text"],
-                instructions: body.instructions || defaultInstructions,
+                instructions: instructions,
                 tool_choice: "auto",
             }),
         });

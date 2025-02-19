@@ -4,10 +4,6 @@ import { useState, useRef, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { Conversation } from "@/lib/conversations";
 import { useTranslations } from "@/components/translations-context";
-import { en } from "@/lib/translations/en";
-import { es } from "@/lib/translations/es";
-import { fr } from "@/lib/translations/fr";
-import { zh } from "@/lib/translations/zh";
 
 export interface Tool {
   name: string;
@@ -38,8 +34,8 @@ interface UseWebRTCAudioSessionReturn {
  */
 export default function useWebRTCAudioSession(
   voice: string,
-  systemPrompt: string,
   tools?: Tool[],
+  systemPrompt?: string,
 ): UseWebRTCAudioSessionReturn {
   const { t, locale } = useTranslations();
   // Connection/session states
@@ -103,20 +99,6 @@ export default function useWebRTCAudioSession(
     console.log("Session update sent:", sessionUpdate);
     console.log("Setting locale: " + t("language") + " : " + locale);
 
-    // Get the appropriate language prompt based on locale
-    const getLanguagePrompt = (locale: string) => {
-      switch(locale) {
-        case 'es':
-          return es.languagePrompt;
-        case 'fr':
-          return fr.languagePrompt;
-        case 'zh':
-          return zh.languagePrompt;
-        default:
-          return en.languagePrompt;
-      }
-    }
-
     // Send language preference message
     const languageMessage = {
       type: "conversation.item.create",
@@ -126,7 +108,7 @@ export default function useWebRTCAudioSession(
         content: [
           {
             type: "input_text",
-            text: getLanguagePrompt(locale),
+            text: t("languagePrompt"),
           },
         ],
       },
@@ -335,30 +317,6 @@ export default function useWebRTCAudioSession(
   }
 
   /**
-   * Fetch ephemeral token from your Next.js endpoint
-   */
-  async function getEphemeralToken() {
-    try {
-      const response = await fetch("/api/session", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          voice,
-          instructions: systemPrompt,
-        }),
-      });
-      if (!response.ok) {
-        throw new Error(`Failed to get ephemeral token: ${response.status}`);
-      }
-      const data = await response.json();
-      return data.client_secret.value;
-    } catch (err) {
-      console.error("getEphemeralToken error:", err);
-      throw err;
-    }
-  }
-
-  /**
    * Sets up a local audio visualization for mic input (toggle wave CSS).
    */
   function setupAudioVisualization(stream: MediaStream) {
@@ -413,9 +371,6 @@ export default function useWebRTCAudioSession(
       audioStreamRef.current = stream;
       setupAudioVisualization(stream);
 
-      setStatus("Fetching ephemeral token...");
-      const ephemeralToken = await getEphemeralToken();
-
       setStatus("Establishing connection...");
       const pc = new RTCPeerConnection();
       peerConnectionRef.current = pc;
@@ -459,8 +414,23 @@ export default function useWebRTCAudioSession(
       const offer = await pc.createOffer();
       await pc.setLocalDescription(offer);
 
-      // Send SDP offer to OpenAI Realtime
-      const baseUrl = "https://api.aiteamforce.com/v1/realtime";
+      // First get the session token and SDP answer
+      const sessionResponse = await fetch("/api/session", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          instructions: systemPrompt,
+          voice: voice,
+        }),
+      });
+
+      const sessionData = await sessionResponse.json();
+      const ephemeralToken = sessionData.client_secret.value;
+
+      // Then establish WebRTC connection with the token
+      const baseUrl = "https://api.openai.com/v1/realtime";
       const model = "gpt-4o-realtime-preview-2024-12-17";
       const response = await fetch(`${baseUrl}?model=${model}&voice=${voice}`, {
         method: "POST",
@@ -471,7 +441,6 @@ export default function useWebRTCAudioSession(
         },
       });
 
-      // Set remote description
       const answerSdp = await response.text();
       await pc.setRemoteDescription({ type: "answer", sdp: answerSdp });
 

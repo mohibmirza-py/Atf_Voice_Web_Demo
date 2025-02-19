@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     images: "/opengraph-image.png",
   },
   icons: {
-    icon: "/favicon.ico",
+    icon: "/atf_logo.svg",
   },
   keywords: ["AI Team Force", "Sarah", "Voice AI", "Voice AI components", "web components", "UI components", "UI Library", "shadcn", "AI", "Next.js", "React", "Tailwind CSS", "Framer Motion", "TypeScript"],
 };
