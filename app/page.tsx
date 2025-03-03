@@ -18,6 +18,7 @@ import { useTranslations } from "@/components/translations-context"
 import { PromptSelector } from "@/components/prompt-selector"
 import { Button } from "@/components/ui/button"
 import { prompts } from "@/config/prompts"
+import { ConsumptionTracker } from "@/components/consumption-tracker"
 
 const App: React.FC = () => {
   const { t, setLocale } = useTranslations();
@@ -69,6 +70,12 @@ const App: React.FC = () => {
     });
   }, [registerFunction, toolsFunctions])
 
+  const handleBalanceDepleted = () => {
+    if (isSessionActive) {
+      stopSession();
+    }
+  };
+
   return (
     <main className="h-full">
       <motion.div 
@@ -85,6 +92,11 @@ const App: React.FC = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2, duration: 0.4 }}
         >
+          <ConsumptionTracker 
+            isSessionActive={isSessionActive} 
+            onBalanceDepleted={handleBalanceDepleted}
+          />
+          
           <VoiceSelector value={voice} onValueChange={setVoice} />
           
           <div className="space-y-4">
