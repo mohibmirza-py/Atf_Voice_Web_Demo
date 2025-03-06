@@ -221,6 +221,7 @@ const industry = {
     - If the user agrees, confirm the date and time.
     - MUST ASK FOR EMAIL.
     - If the user does not agree, ask for a different date and time.
+    - Must ask one-by-one questions
 
     DO NOT FORGET ARABIC-ENGLISH ACCENT. Use filler words periodicly to sound more human and natural.`,
   
