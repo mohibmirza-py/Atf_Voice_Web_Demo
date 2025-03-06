@@ -27,10 +27,27 @@ const App: React.FC = () => {
   const [language, setLanguage] = useState("");
   const [isCustomPrompt, setIsCustomPrompt] = useState(false);
   const [systemPrompt, setSystemPrompt] = useState(t('systemPrompt.default'));
+  const [isFirstClassSelected, setIsFirstClassSelected] = useState(false);
+
+  // Handle industry selection
+  const handleIndustryChange = (value: string) => {
+    setIndustry(value);
+    // If First Class is selected, set isFirstClassSelected to true
+    if (value === "first_class_property") {
+      setIsFirstClassSelected(true);
+    } else {
+      setIsFirstClassSelected(false);
+    }
+  };
 
   // Move function declaration before its usage
   const getFinalPrompt = () => {
     if (isCustomPrompt) return systemPrompt;
+    
+    // If First Class is selected, return only the industry prompt without language settings
+    if (industry === "first_class_property") {
+      return prompts.industry[industry as keyof typeof prompts.industry];
+    }
     
     const industryPrompt = industry ? prompts.industry[industry as keyof typeof prompts.industry] : '';
     const languagePrompt = language ? prompts.language[language as keyof typeof prompts.language] : '';
@@ -97,7 +114,11 @@ const App: React.FC = () => {
             onBalanceDepleted={handleBalanceDepleted}
           />
           
-          <VoiceSelector value={voice} onValueChange={setVoice} />
+          <VoiceSelector 
+            value={voice} 
+            onValueChange={setVoice} 
+            disabled={isSessionActive}
+          />
           
           <div className="space-y-4">
             <div className="flex items-center space-x-2 justify-center w-full mb-2">
@@ -122,14 +143,14 @@ const App: React.FC = () => {
                 <PromptSelector
                   type="industry"
                   value={industry}
-                  onValueChange={setIndustry}
+                  onValueChange={handleIndustryChange}
                   disabled={isSessionActive}
                 />
                 <PromptSelector
                   type="language"
                   value={language}
                   onValueChange={setLanguage}
-                  disabled={isSessionActive}
+                  disabled={isSessionActive || isFirstClassSelected}
                 />
               </>
             ) : (

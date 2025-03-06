@@ -105,11 +105,19 @@ export const en = {
     },
     voice: {
         select: "Select a voice",
+        alloy: "Alloy - Versatile & Balanced",
         ash: "Ash - Gentle & Professional",
         ballad: "Ballad - Warm & Engaging",
         coral: "Coral - Clear & Friendly",
+        echo: "Echo - Resonant & Melodic",
         sage: "Sage - Authoritative & Calm",
+        shimmer: "Shimmer - Bright & Vibrant",
         verse: "Verse - Dynamic & Expressive"
+    },
+    industry: {
+        realestate: "Real Estate Agent in Dubai",
+        restaurant: "Restaurant Owner",
+        first_class_property: "First Class Property Management in Dubai"
     },
     language: "English",
     languagePrompt: "Speak and respond only in English. It is crucial that you maintain your responses in English. If the user speaks in other languages, you should still respond in English.",

@@ -12,6 +12,12 @@ interface PromptSelectorProps {
 export function PromptSelector({ type, value, onValueChange, disabled }: PromptSelectorProps) {
   const options = type === 'industry' ? prompts.industry : prompts.language
   
+  // Function to format the display name of each option
+  const formatDisplayName = (key: string) => {
+    if (key === 'first_class_property') return 'FIRST CLASS PROPERTY';
+    return key.replace('_', ' ').toUpperCase();
+  };
+  
   return (
     <div className="form-group space-y-2">
       <Label htmlFor={`${type}Select`} className="text-sm font-medium flex items-center gap-2">
@@ -24,7 +30,7 @@ export function PromptSelector({ type, value, onValueChange, disabled }: PromptS
         <SelectContent>
           {Object.entries(options).map(([key, _]) => (
             <SelectItem key={key} value={key}>
-              {key.replace('_', ' ').toUpperCase()}
+              {formatDisplayName(key)}
             </SelectItem>
           ))}
         </SelectContent>
